@@ -19,6 +19,8 @@
         "laravel/sanctum": "^3.2",
         "laravel/tinker": "^2.5",
         "laravel/ui": "^4.5",
+        "league/flysystem-aws-s3-v3": "^3.29",
+        "league/flysystem-path-prefixing": "^3.0",
         "maatwebsite/excel": "^3.1",
         "mpdf/mpdf": "^8.2",
         "prettus/l5-repository": "^2.7.9"
@@ -45,6 +47,10 @@
         }
     },
     "extra": {
+        "aws/aws-sdk-php": [
+            "S3",
+            "Ses"
+        ],
         "laravel": {
             "dont-discover": []
         }
@@ -89,6 +95,7 @@
     "prefer-stable": true,
     "scripts": {
         "post-autoload-dump": [
+            "Aws\\Script\\Composer\\Composer::removeUnusedServices",
             "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
             "@php artisan package:discover --ansi"
         ],
