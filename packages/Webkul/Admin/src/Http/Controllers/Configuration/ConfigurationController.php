@@ -64,7 +64,7 @@ class ConfigurationController extends Controller
 
         $config = $this->configurationRepository->findOneByField('value', $fileName);
 
-        return Storage::download($config['value']);
+        return Storage::assetDownload($config['value']);
     }
 
     /**

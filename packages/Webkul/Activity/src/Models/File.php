@@ -26,7 +26,7 @@ class File extends Model implements FileContract
      */
     public function url()
     {
-        return Storage::url($this->path);
+        return Storage::assetUrl($this->path);
     }
 
     /**

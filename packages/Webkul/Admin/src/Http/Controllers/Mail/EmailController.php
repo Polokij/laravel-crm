@@ -218,7 +218,7 @@ class EmailController extends Controller
         $attachment = $this->attachmentRepository->findOrFail($id);
 
         try {
-            return Storage::download($attachment->path);
+            return Storage::assetDownload($attachment->path);
         } catch (\Exception $e) {
             session()->flash('error', $e->getMessage());
 

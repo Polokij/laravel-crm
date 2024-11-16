@@ -47,7 +47,7 @@ class User extends Authenticatable implements UserContract
             return;
         }
 
-        return Storage::url($this->image);
+        return Storage::assetUrl($this->image);
     }
 
     /**

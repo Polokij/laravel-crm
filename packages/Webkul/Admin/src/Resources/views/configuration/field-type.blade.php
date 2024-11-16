@@ -15,7 +15,7 @@
         validations="{{ $field->getValidations() }}"
         is-require="{{ $field->isRequired() }}"
         depend-name="{{ $field->getDependFieldName() }}"
-        src="{{ Storage::url($value) }}"
+        src="{{ Storage::assetUrl($value) }}"
         field-data="{{ json_encode($field) }}"
     >
         <div class="shimmer mb-1.5 h-5 w-24"></div>

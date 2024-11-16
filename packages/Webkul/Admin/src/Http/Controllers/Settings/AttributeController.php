@@ -189,8 +189,8 @@ class AttributeController extends Controller
     /**
      * Download image or file
      */
-    public function download(): StreamedResponse
+    public function download(): StreamedResponse | RedirectResponse
     {
-        return Storage::download(request('path'));
+        return Storage::assetDownload(request('path'));
     }
 }

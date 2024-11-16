@@ -5,7 +5,7 @@
             target="_blank"
         >
             <img
-                src="{{ Storage::url($value) }}"
+                src="{{ Storage::assetUrl($value) }}"
                 alt="{{ $attribute->code }}"
                 class="top-15 rounded-3 border-3 relative h-[33px] w-[33px] border-gray-500"
             />

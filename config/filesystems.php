@@ -48,6 +48,12 @@ return [
             'prefix' => env('TENANT_ID') ?: env('APPLICATION_ID'),
         ],
 
+        's3-backup' => [
+            'driver' => 'scoped',
+            'disk'   => 's3-common',
+            'prefix' => env('TENANT_ID') ?: env('APPLICATION_ID') . '/backup',
+        ],
+
         's3-common' => [
             'driver'   => 's3',
             'key'      => env('AWS_ACCESS_KEY_ID'),

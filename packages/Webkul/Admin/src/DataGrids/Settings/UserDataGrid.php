@@ -56,7 +56,7 @@ class UserDataGrid extends DataGrid
             'filterable' => true,
             'closure'    => function ($row) {
                 return [
-                    'image' => $row->image ? Storage::url($row->image) : null,
+                    'image' => $row->image ? Storage::assetUrl($row->image) : null,
                     'name'  => $row->name,
                 ];
             },
