@@ -22,6 +22,7 @@ class Installer extends Command
      * @var string
      */
     protected $signature = 'krayin-crm:install
+        { --fresh : Migrate fresh }
         { --skip-env-check : Skip env check. }
         { --skip-admin-creation : Skip admin creation. }';
 
@@ -128,11 +129,15 @@ class Installer extends Command
 
         $this->loadEnvConfigAtRuntime();
 
-        $this->warn('Step: Generating key...');
-        $this->call('key:generate');
+        // $this->warn('Step: Generating key...');
+        // $this->call('key:generate');
 
         $this->warn('Step: Migrating all tables...');
-        $this->call('migrate:fresh');
+        if ($this->option('fresh')) {
+            $this->call('migrate:fresh', ['--force'=> true]);
+        } else {
+            $this->call('migrate', ['--force'=> true]);
+        }
 
         $this->warn('Step: Seeding basic data for Krayin kickstart...');
         $this->info(app(KrayinDatabaseSeeder::class)->run([
@@ -378,7 +383,7 @@ class Installer extends Command
          * Setting application configuration.
          */
         config([
-            'app.env'      => $this->getEnvAtRuntime('APP_ENV'),
+            'app.env'      => $this->getEnvAtRuntime('APP_ENV') ,
             'app.name'     => $this->getEnvAtRuntime('APP_NAME'),
             'app.url'      => $this->getEnvAtRuntime('APP_URL'),
             'app.timezone' => $this->getEnvAtRuntime('APP_TIMEZONE'),
@@ -459,6 +464,10 @@ class Installer extends Command
      */
     protected static function getEnvAtRuntime(string $key): string|bool
     {
+        if (env($key)) {
+            return env($key);
+        }
+
         if ($data = file(base_path('.env'))) {
             foreach ($data as $line) {
                 $line = preg_replace('/\s+/', '', $line);

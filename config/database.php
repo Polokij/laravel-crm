@@ -132,7 +132,7 @@ return [
             'port'     => env('REDIS_PORT', '6379'),
             'database' => env('REDIS_DB', '0'),
             'context'  => [
-                'auth' => [env('REDIS_USERNAME', 'default'), env('REDIS_PASSWORD'),],
+                'auth' => [env('REDIS_USERNAME', ) ?: 'default', env('REDIS_PASSWORD'),],
             ],
         ],
 
@@ -142,7 +142,7 @@ return [
             'port'     => env('REDIS_PORT', '6379'),
             'database' => env('REDIS_CACHE_DB', '1'),
             'context'  => [
-                'auth' => [env('REDIS_USERNAME', 'default'), env('REDIS_PASSWORD')],
+                'auth' => [env('REDIS_USERNAME', ) ?: 'default', env('REDIS_PASSWORD'),],
             ],
         ],
 
