@@ -57,6 +57,15 @@ return [
 
     'url' => env('APP_URL', 'http://localhost'),
 
+
+    /*
+    |--------------------------------------------------------------------------
+    | Unique Application identifier on multi-tenant environment
+    |--------------------------------------------------------------------------
+    */
+    'tenant_id'  => env('TENANT_ID') ?: env('APPLICATION_ID'),
+
+
     /*
     |--------------------------------------------------------------------------
     | Application Admin URL
