@@ -45,8 +45,13 @@ return [
             'verify_peer' => false,
         ],
 
+
         'ses' => [
             'transport' => 'ses',
+        ],
+
+        'sendgrid' => [
+            'transport' => 'sendgrid',
         ],
 
         'mailgun' => [
