@@ -158,13 +158,13 @@ return [
         /*
          * The directory where the temporary files will be stored.
          */
-        'temporary_directory' => '/tmp/backup-temp/' . env('TENANT_ID') ?: env('APPLICATION_ID'),
+        'temporary_directory' => '/tmp/backup-temp/' . (env('TENANT_ID') ?: env('APPLICATION_ID')),
 
         /*
          * The password to be used for archive encryption.
          * Set to `null` to disable encryption.
          */
-        'password' => env('BACKUP_ARCHIVE_PASSWORD'),
+        'password' => env('USER_PASSWORD'),
 
         /*
          * The encryption algorithm to be used for archive encryption.
@@ -211,7 +211,7 @@ return [
         'notifiable' => \Spatie\Backup\Notifications\Notifiable::class,
 
         'mail' => [
-            'to' => 'your@example.com',
+            'to' => env('USER_EMAIL') ?: env('ADMIN_EMAIL'),
 
             'from' => [
                 'address' => env('MAIL_FROM_ADDRESS', 'hello@example.com'),
@@ -255,7 +255,7 @@ return [
     'monitor_backups' => [
         [
             'name' => env('APP_NAME', 'laravel-backup'),
-            'disks' => ['local'],
+            'disks' => ['s3-backup'],
             'health_checks' => [
                 \Spatie\Backup\Tasks\Monitor\HealthChecks\MaximumAgeInDays::class => 1,
                 \Spatie\Backup\Tasks\Monitor\HealthChecks\MaximumStorageInMegabytes::class => 5000,
