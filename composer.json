@@ -32,6 +32,7 @@
   "require-dev": {
     "barryvdh/laravel-debugbar": "^3.6",
     "fakerphp/faker": "^1.9.1",
+    "kargnas/laravel-ai-translator": "*",
     "krayin/krayin-package-generator": "dev-master",
     "laravel/pint": "^1.16",
     "laravel/sail": "^1.0.1",
@@ -40,14 +41,17 @@
     "pestphp/pest": "^2.6",
     "pestphp/pest-plugin-laravel": "^2.1",
     "phpunit/phpunit": "^10.0",
-    "spatie/laravel-ignition": "^2.0"
+    "spatie/laravel-ignition": "^2.0",
+    "symfony/var-exporter": "^7.2",
+    "visualbuilder/ai-translate": "^1.0"
   },
   "config": {
     "optimize-autoloader": true,
     "preferred-install": "dist",
     "sort-packages": true,
     "allow-plugins": {
-      "pestphp/pest-plugin": true
+      "pestphp/pest-plugin": true,
+      "php-http/discovery": true
     }
   },
   "extra": {

@@ -123,6 +123,7 @@ return [
         'fa' => 'Persian',
         'tr' => 'Türkçe',
         'vi' => 'Vietnamese',
+        'uk' => 'Українська',
     ],
 
     /*
