@@ -4,7 +4,6 @@ namespace App\Console;
 
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
-use Illuminate\Support\Facades\Log;
 
 class Kernel extends ConsoleKernel
 {
@@ -27,6 +26,8 @@ class Kernel extends ConsoleKernel
         $schedule->call(function() {
             \Artisan::queue('backup:run')->onQueue('default');
         })->dailyAt('12:30');
+
+        $schedule->command('inbound-emails:process')->everyFiveMinutes();
     }
 
     /**
@@ -35,8 +36,6 @@ class Kernel extends ConsoleKernel
     protected function commands(): void
     {
         $this->load(__DIR__.'/Commands');
-
-        $this->load(__DIR__.'/../../packages/Webkul/Core/src/Console/Commands');
 
         require base_path('routes/console.php');
     }

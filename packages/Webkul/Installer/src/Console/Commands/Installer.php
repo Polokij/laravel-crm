@@ -39,11 +39,12 @@ class Installer extends Command
      * @var array
      */
     protected $locales = [
-        'ar' => 'Arabic',
-        'en' => 'English',
-        'tr' => 'Turkish',
-        'es' => 'Spanish',
-        'fa' => 'Persian',
+        'ar'    => 'Arabic',
+        'en'    => 'English',
+        'tr'    => 'Turkish',
+        'es'    => 'Spanish',
+        'fa'    => 'Persian',
+        'pt_BR' => 'Portuguese',
     ];
 
     /**

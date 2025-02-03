@@ -4,16 +4,16 @@
 
         $fieldName = $parentAttribute->entity_type . '[' . $parentAttribute->code . ']';
 
-        $validations = $parentAttribute->is_required ? 'required' : '';
+        $validations = $attribute->is_required ? 'required' : '';
     @endphp
-    
+
     <x-web_form::form.control-group>
         <x-web_form::form.control-group.label
             :for="$fieldName"
             class="{{ $validations }}"
             style="color: {{ $webForm->attribute_label_color }} !important;"
         >
-            {{ $parentAttribute->name }}
+            {{ $attribute->name ?? $parentAttribute->name }}
         </x-web_form::form.control-group.label>
 
         @switch($parentAttribute->type)
@@ -23,7 +23,8 @@
                     :name="$fieldName"
                     :id="$fieldName"
                     :rules="$validations"
-                    :label="$parentAttribute->name"
+                    :label="$attribute->name ?? $parentAttribute->name"
+                    :placeholder="$attribute->placeholder"
                 />
 
                 <x-web_form::form.control-group.error :control-name="$fieldName" />
@@ -36,7 +37,8 @@
                     :name="$fieldName"
                     :id="$fieldName"
                     :rules="$validations.'|numeric'"
-                    :label="$parentAttribute->name"
+                    :label="$attribute->name ?? $parentAttribute->name"
+                    :placeholder="$attribute->placeholder"
                 />
 
                 <x-web_form::form.control-group.error :control-name="$fieldName" />
@@ -49,7 +51,8 @@
                     name="{{ $fieldName }}[0][value]"
                     id="{{ $fieldName }}[0][value]"
                     rules="{{ $validations }}|email"
-                    :label="$parentAttribute->name"
+                    :label="$attribute->name ?? $parentAttribute->name"
+                    :placeholder="$attribute->placeholder"
                 />
 
                 <x-web_form::form.control-group.control
@@ -89,7 +92,7 @@
                         </label>
                     </x-web_form::form.control-group>
                 @endforeach
-            
+
             @case('file')
             @case('image')
                 <x-web_form::form.control-group.control
@@ -97,11 +100,12 @@
                     :name="$fieldName"
                     :id="$fieldName"
                     :rules="$validations"
-                    :label="$parentAttribute->name"
+                    :placeholder="$attribute->placeholder"
+                    :label="$attribute->name ?? $parentAttribute->name"
                 />
 
                 <x-web_form::form.control-group.error control-name="{{ $fieldName }}" />
-                
+
                 @break;
 
             @case('phone')
@@ -109,8 +113,9 @@
                     type="text"
                     name="{{ $fieldName }}[0][value]"
                     id="{{ $fieldName }}[0][value]"
-                    rules="{{ $validations }}|numeric"
-                    :label="$parentAttribute->name"
+                    rules="{{ $validations }}|phone"
+                    :label="$attribute->name ?? $parentAttribute->name"
+                    :placeholder="$attribute->placeholder"
                 />
 
                 <x-web_form::form.control-group.control
@@ -131,7 +136,8 @@
                     :name="$fieldName"
                     :id="$fieldName"
                     :rules="$validations"
-                    :label="$parentAttribute->name"
+                    :label="$attribute->name ?? $parentAttribute->name"
+                    :placeholder="$attribute->placeholder"
                 />
 
                 <x-web_form::form.control-group.error :control-name="$fieldName" />
@@ -144,7 +150,8 @@
                     :name="$fieldName"
                     :id="$fieldName"
                     :rules="$validations"
-                    :label="$parentAttribute->name"
+                    :label="$attribute->name ?? $parentAttribute->name"
+                    :placeholder="$attribute->placeholder"
                 />
 
                 <x-web_form::form.control-group.error :control-name="$fieldName" />
@@ -164,7 +171,8 @@
                     :name="$fieldName"
                     :id="$fieldName"
                     :rules="$validations"
-                    :label="$parentAttribute->name"
+                    :label="$attribute->name ?? $parentAttribute->name"
+                    :placeholder="$attribute->placeholder"
                 >
                     @foreach ($options as $option)
                         <option value="{{ $option->id }}">{{ $option->name }}</option>
@@ -173,7 +181,7 @@
 
                 <x-web_form::form.control-group.error :control-name="$fieldName" />
 
-                @break            
+                @break
 
             @case('multiselect')
                 @php
@@ -187,7 +195,8 @@
                     id="{{ $fieldName }}"
                     name="{{ $fieldName }}[]"
                     :rules="$validations"
-                    :label="$parentAttribute->name"
+                    :label="$attribute->name ?? $parentAttribute->name"
+                    :placeholder="$attribute->placeholder"
                 >
                     @foreach ($options as $option)
                         <option value="{{ $option->id }}">{{ $option->name }}</option>
@@ -213,18 +222,18 @@
                                 name="{{ $fieldName }}[]"
                                 value="{{ $option->id }}"
                             />
-                
+
                             <label class="checkbox-view" style="display: inline;"></label>
                             {{ $option->name }}
                         </span>
                     @endforeach
                 </div>
 
-                <p 
+                <p
                     id="{{ $fieldName }}[]-error"
                     class="error-message mt-1 text-xs italic text-red-600"
                 ></p>
-                
+
                 @break
 
             @case('boolean')
@@ -233,7 +242,8 @@
                     :name="$fieldName"
                     :id="$fieldName"
                     :rules="$validations"
-                    :label="$parentAttribute->name"
+                    :label="$attribute->name ?? $parentAttribute->name"
+                    :placeholder="$attribute->placeholder"
                 >
                     <option value="1">Yes</option>
                     <option value="0">No</option>
@@ -241,7 +251,7 @@
 
                 <x-web_form::form.control-group.error :control-name="$fieldName" />
 
-                @break   
+                @break
         @endswitch
     </x-web_form::form.control-group>
 @endforeach

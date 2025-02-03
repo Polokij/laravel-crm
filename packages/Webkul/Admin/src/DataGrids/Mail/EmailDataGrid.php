@@ -12,6 +12,13 @@ use Webkul\Tag\Repositories\TagRepository;
 class EmailDataGrid extends DataGrid
 {
     /**
+     * Default sort column of datagrid.
+     *
+     * @var ?string
+     */
+    protected $sortColumn = 'created_at';
+
+    /**
      * Prepare query builder.
      */
     public function prepareQueryBuilder(): Builder
@@ -20,6 +27,7 @@ class EmailDataGrid extends DataGrid
             ->select(
                 'emails.id',
                 'emails.name',
+                'emails.from',
                 'emails.subject',
                 'emails.reply',
                 'emails.is_read',
@@ -48,17 +56,8 @@ class EmailDataGrid extends DataGrid
     public function prepareColumns(): void
     {
         $this->addColumn([
-            'index'      => 'id',
-            'label'      => trans('admin::app.mail.index.datagrid.id'),
-            'type'       => 'string',
-            'sortable'   => true,
-            'searchable' => true,
-            'filterable' => true,
-        ]);
-
-        $this->addColumn([
             'index'      => 'attachments',
-            'label'      => '<span class="icon-attachment text-2xl"></span>',
+            'label'      => trans('admin::app.mail.index.datagrid.attachments'),
             'type'       => 'string',
             'searchable' => false,
             'filterable' => false,
@@ -73,6 +72,11 @@ class EmailDataGrid extends DataGrid
             'sortable'   => true,
             'searchable' => true,
             'filterable' => true,
+            'closure'    => function ($row) {
+                return $row->name
+                    ? trim($row->name, '"')
+                    : trim($row->from, '"');
+            },
         ]);
 
         $this->addColumn([
@@ -85,8 +89,17 @@ class EmailDataGrid extends DataGrid
         ]);
 
         $this->addColumn([
+            'index'      => 'reply',
+            'label'      => trans('admin::app.mail.index.datagrid.content'),
+            'type'       => 'string',
+            'sortable'   => true,
+            'searchable' => true,
+            'filterable' => true,
+        ]);
+
+        $this->addColumn([
             'index'              => 'tags',
-            'label'              => trans('admin::app.mail.index.datagrid.tag-name'),
+            'label'              => trans('admin::app.mail.index.datagrid.tags'),
             'type'               => 'string',
             'searchable'         => false,
             'sortable'           => true,
@@ -110,7 +123,7 @@ class EmailDataGrid extends DataGrid
 
         $this->addColumn([
             'index'           => 'created_at',
-            'label'           => trans('admin::app.mail.index.datagrid.created-at'),
+            'label'           => trans('admin::app.mail.index.datagrid.date'),
             'type'            => 'date',
             'searchable'      => true,
             'filterable'      => true,

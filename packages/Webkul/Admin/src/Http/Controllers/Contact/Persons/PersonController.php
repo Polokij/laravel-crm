@@ -30,7 +30,7 @@ class PersonController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(): View|JsonResponse
+    public function index()
     {
         if (request()->ajax()) {
             return datagrid(PersonDataGrid::class)->process();
@@ -103,6 +103,7 @@ class PersonController extends Controller
 
         if (request()->ajax()) {
             return response()->json([
+                'data'    => $person,
                 'message' => trans('admin::app.contacts.persons.index.update-success'),
             ], 200);
         }
@@ -186,8 +187,12 @@ class PersonController extends Controller
             $data['organization_id'] = null;
         }
 
+        $data['unique_id'] = $data['user_id'].'|'.$data['organization_id'].'|'.$data['emails'][0]['value'];
+
         if (isset($data['contact_numbers'])) {
             $data['contact_numbers'] = collect($data['contact_numbers'])->filter(fn ($number) => ! is_null($number['value']))->toArray();
+
+            $data['unique_id'] .= '|'.$data['contact_numbers'][0]['value'];
         }
 
         return $data;
