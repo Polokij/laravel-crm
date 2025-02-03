@@ -108,12 +108,13 @@ return [
      */
 
     'available_locales' => [
-        'ar' => 'Arabic',
-        'en' => 'English',
-        'es' => 'Español',
-        'fa' => 'Persian',
-        'tr' => 'Türkçe',
-        'vi' => 'Vietnamese',
+        'ar'    => 'Arabic',
+        'en'    => 'English',
+        'es'    => 'Español',
+        'fa'    => 'Persian',
+        'pt_BR' => 'Portuguese',
+        'tr'    => 'Türkçe',
+        'vi'    => 'Vietnamese',
     ],
 
     /*
@@ -206,8 +207,10 @@ return [
         Webkul\Contact\Providers\ContactServiceProvider::class,
         Webkul\Core\Providers\CoreServiceProvider::class,
         Webkul\DataGrid\Providers\DataGridServiceProvider::class,
+        Webkul\DataTransfer\Providers\DataTransferServiceProvider::class,
         Webkul\EmailTemplate\Providers\EmailTemplateServiceProvider::class,
         Webkul\Email\Providers\EmailServiceProvider::class,
+        Webkul\Marketing\Providers\MarketingServiceProvider::class,
         Webkul\Installer\Providers\InstallerServiceProvider::class,
         Webkul\Lead\Providers\LeadServiceProvider::class,
         Webkul\Product\Providers\ProductServiceProvider::class,

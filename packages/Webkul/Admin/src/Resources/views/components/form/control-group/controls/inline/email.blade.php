@@ -30,16 +30,16 @@
                     :style="{ 'text-align': position }"
                 >
                     <span class="cursor-pointer truncate rounded">
-                        @{{ valueLabel ? valueLabel : inputValue.map(item => `${item.value}(${item.label})`).join(', ').length > 20 ? inputValue.map(item => `${item.value}(${item.label})`).join(', ').substring(0, 20) + '...' : inputValue.map(item => `${item.value}(${item.label})`).join(', ') }}
+                        @{{ valueLabel ? valueLabel : inputValue?.map(item => `${item.value}(${item.label})`).join(', ').length > 20 ? inputValue?.map(item => `${item.value}(${item.label})`).join(', ').substring(0, 20) + '...' : inputValue?.map(item => `${item.value}(${item.label})`).join(', ') }}
                     </span>
 
                     <!-- Tooltip -->
                     <div
                         class="absolute bottom-0 mb-5 hidden flex-col group-hover:flex"
-                        v-if="inputValue.map(item => `${item.value}(${item.label})`).join(', ').length > 20"
+                        v-if="inputValue?.map(item => `${item.value}(${item.label})`).join(', ').length > 20"
                     >
                         <span class="whitespace-no-wrap relative z-10 rounded-md bg-black px-4 py-2 text-xs leading-none text-white shadow-lg dark:bg-white dark:text-gray-900">
-                            @{{ inputValue.map(item => `${item.value}(${item.label})`).join(', \n') }}
+                            @{{ inputValue?.map(item => `${item.value}(${item.label})`).join(', \n') }}
                         </span>
 
                         <div class="-mt-2 ml-4 h-3 w-3 rotate-45 bg-black dark:bg-white"></div>
@@ -66,7 +66,7 @@
                             <!-- Modal Header -->
                             <x-slot:header>
                                 <p class="text-lg font-bold text-gray-800 dark:text-white">
-                                    Update Contact Emails
+                                    @lang("admin::app.common.custom-attributes.update-emails-title")
                                 </p>
                             </x-slot>
 
@@ -81,6 +81,7 @@
                                             class="!rounded-r-none"
                                             ::rules="getValidation"
                                             v-model="email.value"
+                                            :label="trans('admin::app.common.custom-attributes.email')"
                                         />
 
                                         <div class="relative">
@@ -123,7 +124,7 @@
                                 <x-admin::button
                                     button-type="submit"
                                     class="primary-button justify-center"
-                                    :title="trans('Save')"
+                                    :title="trans('admin::app.common.custom-attributes.save')"
                                     ::loading="isProcessing"
                                     ::disabled="isProcessing"
                                 />
@@ -212,7 +213,7 @@
                  */
                 value(newValue, oldValue) {
                     if (JSON.stringify(newValue) !== JSON.stringify(oldValue)) {
-                        this.emails = newVal || [{'value': '', 'label': 'work'}];
+                        this.emails = newValue || [{'value': '', 'label': 'work'}];
                     }
                 },
             },
@@ -278,7 +279,7 @@
                         const emailOccurrences = emails.filter(email => email.value === value).length;
 
                         if (emailOccurrences > 1) {
-                            return 'This email email is already used';
+                            return 'This email is already used';
                         }
 
                         return true;
@@ -286,20 +287,27 @@
                 },
 
                 updateOrCreate(params) {
-                    this.inputValue = params.contact_emails;
+                    this.inputValue = params.contact_emails ?? params.emails;
 
                     if (this.url) {
+                        this.isProcessing = true;
+
                         this.$axios.put(this.url, {
                                 [this.name]: this.inputValue,
                             })
                             .then((response) => {
+                                this.emails = response.data.data.emails || this.emails;
+
                                 this.$emitter.emit('add-flash', { type: 'success', message: response.data.message });
                             })
                             .catch((error) => {
                                 this.inputValue = this.value;
 
                                 this.$emitter.emit('add-flash', { type: 'error', message: error.response.data.message });
-                            });                        
+                            })
+                            .finally(() => {
+                                this.isProcessing = false;
+                            });
                     }
 
                     this.$emit('on-save', params);

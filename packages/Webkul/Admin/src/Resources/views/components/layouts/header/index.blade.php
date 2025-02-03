@@ -80,7 +80,7 @@
                                 <!-- Link to send new Mail-->
                                 @if (bouncer()->hasPermission('mail.create'))
                                     <div class="rounded-lg bg-white p-2 hover:bg-gray-100 dark:bg-gray-800 dark:hover:bg-gray-950">
-                                        <a href="{{ route('admin.mail.index', ['route' => 'inbox']) }}">
+                                        <a href="{{ route('admin.mail.index', ['route' => 'inbox', 'openModal' => 'true']) }}">
                                             <div class="flex flex-col gap-1">
                                                 <i class="icon-mail text-2xl text-gray-600"></i>
 
@@ -188,16 +188,18 @@
         <!-- Admin profile -->
         <x-admin::dropdown position="bottom-{{ in_array(app()->getLocale(), ['fa', 'ar']) ? 'left' : 'right' }}">
             <x-slot:toggle>
-                @if (auth()->guard('user')->user()->image)
+                @php($user = auth()->guard('user')->user())
+
+                @if ($user->image)
                     <button class="flex h-9 w-9 cursor-pointer overflow-hidden rounded-full hover:opacity-80 focus:opacity-80">
                         <img
-                            src="{{ auth()->guard('user')->user()->image_url }}"
-                            class="w-full"
+                            src="{{ $user->image_url }}"
+                            class="h-full w-full object-cover"
                         />
                     </button>
                 @else
                     <button class="flex h-9 w-9 cursor-pointer items-center justify-center rounded-full bg-pink-400 font-semibold leading-6 text-white">
-                        {{ substr(auth()->guard('user')->user()->name, 0, 1) }}
+                        {{ substr($user->name, 0, 1) }}
                     </button>
                 @endif
             </x-slot>
@@ -258,7 +260,7 @@
                 type="text"
                 class="peer block w-full rounded-3xl border bg-white px-10 py-1.5 leading-6 text-gray-600 transition-all hover:border-gray-400 focus:border-gray-400 dark:border-gray-800 dark:bg-gray-900 dark:text-gray-300 dark:hover:border-gray-400 dark:focus:border-gray-400"
                 :class="{'border-gray-400': isDropdownOpen}"
-                placeholder="@lang('Search')"
+                placeholder="@lang('admin::app.components.layouts.header.mega-search.title')"
                 v-model.lazy="searchTerm"
                 @click="searchTerm.length >= 2 ? isDropdownOpen = true : {}"
                 v-debounce="500"

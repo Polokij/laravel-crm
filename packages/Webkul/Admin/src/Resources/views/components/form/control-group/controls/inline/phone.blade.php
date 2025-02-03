@@ -65,7 +65,7 @@
                             <!-- Modal Header -->
                             <x-slot:header>
                                 <p class="text-lg font-bold text-gray-800 dark:text-white">
-                                    Update Contact Numbers
+                                    @lang("admin::app.common.custom-attributes.update-contact-title")
                                 </p>
                             </x-slot>
 
@@ -79,6 +79,7 @@
                                             ::name="`${name}[${index}].value`"
                                             class="!rounded-r-none"
                                             ::rules="getValidation"
+                                            :label="trans('admin::app.common.custom-attributes.contact')"
                                             v-model="contactNumber.value"
                                         />
 
@@ -122,7 +123,7 @@
                                 <x-admin::button
                                     button-type="submit"
                                     class="primary-button justify-center"
-                                    :title="trans('Save')"
+                                    :title="trans('admin::app.common.custom-attributes.save')"
                                     ::loading="isProcessing"
                                     ::disabled="isProcessing"
                                 />
@@ -237,7 +238,7 @@
                  */
                 getValidation() {
                     return {
-                        numeric: true,
+                        phone: true,
                         unique_contact_number: this.contactNumbers ?? [],
                         required: true,
                     };
@@ -287,20 +288,27 @@
                 },
 
                 updateOrCreate(params) {
-                    this.inputValue = params.contact_numbers;
+                    this.inputValue = params.contact_numbers || this.inputValue;
 
                     if (this.url) {
+                        this.isProcessing = true;
+
                         this.$axios.put(this.url, {
                                 [this.name]: this.inputValue,
                             })
                             .then((response) => {
+                                this.contactNumbers = response.data.data.contact_numbers || this.contactNumbers;
+
                                 this.$emitter.emit('add-flash', { type: 'success', message: response.data.message });
                             })
                             .catch((error) => {
                                 this.inputValue = this.value;
 
                                 this.$emitter.emit('add-flash', { type: 'error', message: error.response.data.message });
-                            });                        
+                            })
+                            .finally(() => {
+                                this.isProcessing = false;
+                            });
                     }
 
                     this.$emit('on-save', params);
