@@ -1121,6 +1121,7 @@ return [
                         'name'        => 'Nombre',
                         'date'        => 'Fecha',
                         'description' => 'Descripción',
+                        'save-btn'    => 'Guardar Evento',
                     ],
 
                     'edit' => [
@@ -1876,9 +1877,17 @@ return [
         'destroy-failed'    => 'No se puede eliminar el lead.',
 
         'file' => [
-            'invalid-format'   => 'Formato JSON inválido.',
-            'invalid-response' => 'Formato de respuesta de IA inválido.',
-            'not-found'        => 'Archivo no encontrado.',
+            'data-not-found'         => 'Datos no encontrados.',
+            'empty-content'          => 'El contenido del PDF está vacío o no se pudo extraer.',
+            'failed-extract'         => 'No se pudo extraer el texto del archivo.',
+            'insufficient-info'      => 'Debido a datos insuficientes, no podemos procesar su solicitud en este momento.',
+            'invalid-base64'         => 'Formato base64 inválido.',
+            'invalid-format'         => 'Formato JSON inválido.',
+            'invalid-response'       => 'Formato de respuesta de IA inválido.',
+            'missing-api-key'        => 'Falta la clave API o la configuración del modelo.',
+            'not-found'              => 'Archivo no encontrado.',
+            'recursive-call'         => 'Se detectó una llamada recursiva.',
+            'text-generation-failed' => 'La extracción de texto falló. El archivo podría estar vacío o ilegible.',
         ],
 
         'index' => [
@@ -1947,12 +1956,13 @@ return [
             ],
 
             'upload' => [
-                'create-lead' => 'Crear Lead Usando IA',
-                'file'        => 'Subir Archivo',
-                'file-info'   => 'Solo se aceptan archivos en formato PDF.',
-                'save-btn'    => 'Guardar',
-                'sample-pdf'  => 'PDF de Muestra',
-                'upload-pdf'  => 'Subir PDF',
+                'create-lead'   => 'Crear Lead Usando IA',
+                'file'          => 'Carga de archivo',
+                'file-info'     => 'Solo se aceptan archivos en formato pdf, bmp, jpg, jpeg, png.',
+                'file-required' => 'Por favor, selecciona al menos un archivo válido para continuar.',
+                'sample-pdf'    => 'PDF de Muestra',
+                'save-btn'      => 'Guardar',
+                'upload-file'   => 'Subir archivo',
             ],
         ],
 
@@ -2066,11 +2076,14 @@ return [
 
     'configuration' => [
         'index' => [
-            'back'         => 'Volver',
-            'save-btn'     => 'Guardar Configuración',
-            'save-success' => 'Configuración Guardada Exitosamente.',
-            'search'       => 'Buscar',
-            'title'        => 'Configuración',
+            'back'           => 'Regresar',
+            'delete'         => 'Eliminar',
+            'save-btn'       => 'Guardar Configuración',
+            'save-success'   => 'Configuración Guardada Exitosamente.',
+            'search'         => 'Buscar',
+            'select-country' => 'Seleccionar País',
+            'select-state'   => 'Seleccionar Estado',
+            'title'          => 'Configuración',
 
             'general'  => [
                 'title'   => 'General',
@@ -2078,10 +2091,56 @@ return [
 
                 'general' => [
                     'title'           => 'General',
-                    'info'            => 'Actualiza tus ajustes generales aquí.',
+                    'info'            => 'Actualiza tus configuraciones generales aquí.',
                     'locale-settings' => [
-                        'title'       => 'Configuración Regional',
-                        'title-info'  => 'Define el idioma utilizado en la interfaz de usuario, como árabe (ar), inglés (en), español (es), persa (fa) y turco (tr).',
+                        'title'       => 'Configuraciones de Idioma',
+                        'title-info'  => 'Define el idioma utilizado en la interfaz de usuario, como Árabe (ar), Inglés (en), Español (es), Persa (fa) y Turco (tr).',
+                    ],
+
+                    'admin-logo' => [
+                        'logo-image' => 'Imagen del Logo',
+                        'title'      => 'Logo del Administrador',
+                        'title-info' => 'Configura la imagen del logo para tu panel de administración.',
+                    ],
+                ],
+
+                'settings' => [
+                    'title' => 'Configuraciones',
+                    'info'  => 'Actualiza tus configuraciones aquí.',
+
+                    'footer' => [
+                        'info'       => 'Podemos configurar la sección de powered by aquí.',
+                        'powered-by' => 'Editor de texto impulsado por',
+                        'title'      => 'Configuraciones de la Sección Powered by',
+                    ],
+
+                    'menu' => [
+                        'activities'     => 'Actividades',
+                        'configuration'  => 'Configuración',
+                        'contacts'       => 'Contactos',
+                        'dashboard'      => 'Tablero',
+                        'draft'          => 'Borrador',
+                        'inbox'          => 'Bandeja de Entrada',
+                        'info'           => 'Podemos configurar los nombres de los elementos del menú aquí.',
+                        'leads'          => 'Leads',
+                        'mail'           => 'Correo',
+                        'organizations'  => 'Organizaciones',
+                        'outbox'         => 'Bandeja de Salida',
+                        'persons'        => 'Personas',
+                        'products'       => 'Productos',
+                        'quotes'         => 'Cotizaciones',
+                        'sent'           => 'Enviados',
+                        'settings'       => 'Configuraciones',
+                        'title'          => 'Configuraciones de Elementos del Menú',
+                        'trash'          => 'Papelera',
+                    ],
+
+                    'menu-color' => [
+                        'active-background-color' => 'Color de Fondo Activo',
+                        'active-text-color'       => 'Color de Texto Activo',
+                        'info'                    => 'Podemos cambiar los colores de los elementos del menú aquí.',
+                        'text-color'              => 'Color de Texto',
+                        'title'                   => 'Configuraciones de Color de Elementos del Menú',
                     ],
                 ],
             ],
@@ -2112,24 +2171,24 @@ return [
                 'info'  => 'Configuración de Magic AI para la aplicación.',
 
                 'settings' => [
-                    'api-domain'          => 'Dominio de la API de LLM',
-                    'api-domain-info'     => 'Solo para Olama y Grow, Ejemplo: http://localhost:11434',
                     'api-key'             => 'Clave API',
-                    'api-key-info'        => 'Asegúrese de usar una clave API única para cada tipo de modelo para mantener un rendimiento y seguridad óptimos.',
+                    'api-key-info'        => 'Recuerda usar una clave API de OpenRouter para cada modelo. Es un paso simple para mejorar la seguridad y el rendimiento.',
                     'enable'              => 'Habilitar',
-                    'info'                => 'Mejore su experiencia con la función Magic AI ingresando su clave API exclusiva e indicando la integración sin esfuerzo. Tome el control de sus credenciales de OpenAI y personalice la configuración según sus necesidades específicas.',
+                    'info'                => 'Mejora tu experiencia con Magic AI con tu clave API de OpenRouter. ¡Intégrala ahora para una aventura de IA personalizada y sin problemas, hecha a tu medida! Personaliza la configuración sin esfuerzo y toma el control de tu viaje de IA.',
+                    'other'               => 'Otro Modelo',
+                    'other-model'         => 'Para otros modelos, usa el ID del Modelo de OpenRouter.',
                     'pdf-generation'      => 'Generación de PDF',
-                    'pdf-generation-info' => 'Habilite la función de Generación de PDF para extraer automáticamente datos de archivos PDF y convertirlos en formato de texto. Mejore su productividad y eficiencia habilitando esta función para optimizar su flujo de trabajo.',
+                    'pdf-generation-info' => 'Habilita la función de Generación de PDF para extraer automáticamente datos de archivos PDF y convertirlos en formato de texto. Mejora tu productividad y eficiencia habilitando esta función para optimizar tu flujo de trabajo.',
                     'title'               => 'Configuraciones Generales',
 
                     'models'     => [
-                        'deepseek-r1'  => 'DeepSeek-R1 8db',
-                        'gemini-flash' => 'Gemini-1.5 Flash',
-                        'gpt-4o'       => 'GPT-4.0',
-                        'gpt-4o-mini'  => 'GPT-4.0 mini',
-                        'llama'        => 'Llama 3.3 (Groq)',
-                        'ollama'       => 'Ollama (llama3.2:latest)',
-                        'title'        => 'Modelos',
+                        'deepseek-r1'           => 'Deepseek R1 Distill-llama-8b',
+                        'gemini-2-0-flash-001'  => 'Gemini 2.0 flash-001',
+                        'gpt-4o'                => 'GPT-4.0',
+                        'gpt-4o-mini'           => 'GPT-4.0 mini',
+                        'grok-2-1212'           => 'Grok 2.12',
+                        'llama-3-2-3b-instruct' => 'Llama 3.2 3b Instruct',
+                        'title'                 => 'Modelos',
                     ],
                 ],
             ],

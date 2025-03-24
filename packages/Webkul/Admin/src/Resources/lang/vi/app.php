@@ -1118,6 +1118,7 @@ return [
                         'name'        => 'Tên',
                         'date'        => 'Ngày',
                         'description' => 'Mô tả',
+                        'save-btn'    => 'Lưu Sự kiện',
                     ],
 
                     'edit' => [
@@ -1770,9 +1771,17 @@ return [
         'destroy-failed'    => 'Không thể xóa khách hàng tiềm năng.',
 
         'file' => [
-            'invalid-format'   => 'Định dạng JSON không hợp lệ.',
-            'invalid-response' => 'Định dạng phản hồi AI không hợp lệ.',
-            'not-found'        => 'Không tìm thấy tệp.',
+            'data-not-found'         => 'Không tìm thấy dữ liệu.',
+            'empty-content'          => 'Nội dung PDF trống hoặc không thể trích xuất.',
+            'failed-extract'         => 'Không thể trích xuất văn bản từ tệp.',
+            'insufficient-info'      => 'Do dữ liệu không đủ, chúng tôi không thể xử lý yêu cầu của bạn vào lúc này.',
+            'invalid-base64'         => 'Định dạng base64 không hợp lệ.',
+            'invalid-format'         => 'Định dạng JSON không hợp lệ.',
+            'invalid-response'       => 'Định dạng phản hồi AI không hợp lệ.',
+            'missing-api-key'        => 'Thiếu khóa API hoặc cấu hình mô hình.',
+            'not-found'              => 'Không tìm thấy tệp.',
+            'recursive-call'         => 'Phát hiện cuộc gọi đệ quy.',
+            'text-generation-failed' => 'Trích xuất văn bản thất bại. Tệp có thể trống hoặc không đọc được.',
         ],
 
         'index' => [
@@ -1841,12 +1850,13 @@ return [
             ],
 
             'upload' => [
-                'create-lead' => 'Tạo Khách Hàng Tiềm Năng Bằng AI',
-                'file'        => 'Tải Lên Tệp',
-                'file-info'   => 'Chỉ chấp nhận các tệp định dạng PDF.',
-                'save-btn'    => 'Lưu',
-                'sample-pdf'  => 'PDF Mẫu',
-                'upload-pdf'  => 'Tải Lên PDF',
+                'create-lead'   => 'Tạo Khách Hàng Tiềm Năng Bằng AI',
+                'file'          => 'Tải tệp lên',
+                'file-info'     => 'Chỉ chấp nhận các tệp định dạng pdf, bmp, jpg, jpeg, png.',
+                'file-required' => 'Vui lòng chọn ít nhất một tệp hợp lệ để tiếp tục.',
+                'sample-pdf'    => 'PDF Mẫu',
+                'save-btn'      => 'Lưu',
+                'upload-file'   => 'Tải lên tệp',
             ],
         ],
 
@@ -1960,11 +1970,14 @@ return [
 
     'configuration' => [
         'index' => [
-            'back'         => 'Quay lại',
-            'save-btn'     => 'Lưu Cấu hình',
-            'save-success' => 'Cấu hình đã được lưu thành công.',
-            'search'       => 'Tìm kiếm',
-            'title'        => 'Cấu hình',
+            'back'           => 'Quay lại',
+            'delete'         => 'Xóa',
+            'save-btn'       => 'Lưu Cấu hình',
+            'save-success'   => 'Cấu hình đã được lưu thành công.',
+            'search'         => 'Tìm kiếm',
+            'select-country' => 'Chọn Quốc gia',
+            'select-state'   => 'Chọn Bang',
+            'title'          => 'Cấu hình',
 
             'general'  => [
                 'title'   => 'Chung',
@@ -1976,6 +1989,12 @@ return [
                     'locale-settings' => [
                         'title'       => 'Cài đặt ngôn ngữ',
                         'title-info'  => 'Định nghĩa ngôn ngữ được sử dụng trong giao diện người dùng, như tiếng Ả Rập (ar), tiếng Anh (en), tiếng Tây Ban Nha (es), tiếng Ba Tư (fa) và tiếng Thổ Nhĩ Kỳ (tr).',
+                    ],
+
+                    'admin-logo' => [
+                        'logo-image' => 'Hình ảnh Logo',
+                        'title'      => 'Logo Quản trị',
+                        'title-info' => 'Cấu hình hình ảnh logo cho bảng điều khiển quản trị của bạn.',
                     ],
                 ],
             ],
@@ -2006,25 +2025,65 @@ return [
                 'info'  => 'Cấu hình Magic AI cho ứng dụng.',
 
                 'settings' => [
-                    'api-domain'          => 'Tên miền API LLM',
-                    'api-domain-info'     => 'Dành cho Olama và Grow, Ví dụ: http://localhost:11434',
                     'api-key'             => 'Khóa API',
-                    'api-key-info'        => 'Hãy đảm bảo rằng bạn sử dụng một khóa API duy nhất cho mỗi loại mô hình để duy trì hiệu suất và bảo mật tối ưu.',
+                    'api-key-info'        => 'Nhớ sử dụng khóa API OpenRouter cho mỗi mô hình. Đây là một bước đơn giản để tăng cường bảo mật và hiệu suất.',
                     'enable'              => 'Kích hoạt',
-                    'info'                => 'Nâng cao trải nghiệm của bạn với tính năng Magic AI bằng cách nhập Khóa API độc quyền của bạn và chỉ định tích hợp dễ dàng. Nắm quyền kiểm soát thông tin đăng nhập OpenAI của bạn và tùy chỉnh cài đặt theo nhu cầu cụ thể của bạn.',
+                    'info'                => 'Nâng cao trải nghiệm Magic AI của bạn với Khóa API OpenRouter. Tích hợp ngay bây giờ để có một cuộc phiêu lưu AI liền mạch và cá nhân hóa chỉ dành cho bạn! Dễ dàng tùy chỉnh cài đặt và kiểm soát hành trình AI của bạn.',
+                    'other'               => 'Mô hình khác',
+                    'other-model'         => 'Đối với các mô hình khác, sử dụng ID Mô hình từ OpenRouter.',
                     'pdf-generation'      => 'Tạo PDF',
                     'pdf-generation-info' => 'Kích hoạt tính năng Tạo PDF để tự động trích xuất dữ liệu từ các tệp PDF và chuyển đổi chúng thành định dạng văn bản. Nâng cao năng suất và hiệu quả của bạn bằng cách kích hoạt tính năng này để tối ưu hóa quy trình làm việc của bạn.',
                     'title'               => 'Cài đặt chung',
 
                     'models'     => [
-                        'deepseek-r1'  => 'DeepSeek-R1 8db',
-                        'gemini-flash' => 'Gemini-1.5 Flash',
-                        'gpt-4o'       => 'GPT-4.0',
-                        'gpt-4o-mini'  => 'GPT-4.0 mini',
-                        'llama'        => 'Llama 3.3 (Groq)',
-                        'ollama'       => 'Ollama (llama3.2:latest)',
-                        'title'        => 'Mô hình',
+                        'deepseek-r1'           => 'Deepseek R1 Distill-llama-8b',
+                        'gemini-2-0-flash-001'  => 'Gemini 2.0 flash-001',
+                        'gpt-4o'                => 'GPT-4.0',
+                        'gpt-4o-mini'           => 'GPT-4.0 mini',
+                        'grok-2-1212'           => 'Grok 2.12',
+                        'llama-3-2-3b-instruct' => 'Llama 3.2 3b Instruct',
+                        'title'                 => 'Mô hình',
                     ],
+                ],
+            ],
+
+            'settings' => [
+                'title' => 'Cài đặt',
+                'info'  => 'Cập nhật cài đặt của bạn tại đây.',
+
+                'footer' => [
+                    'info'       => 'Chúng tôi có thể cấu hình phần powered by tại đây.',
+                    'powered-by' => 'Được hỗ trợ bởi trình chỉnh sửa văn bản',
+                    'title'      => 'Cấu hình Phần Powered by',
+                ],
+
+                'menu' => [
+                    'activities'     => 'Hoạt động',
+                    'configuration'  => 'Cấu hình',
+                    'contacts'       => 'Liên hệ',
+                    'dashboard'      => 'Bảng điều khiển',
+                    'draft'          => 'Thư nháp',
+                    'inbox'          => 'Hộp thư đến',
+                    'info'           => 'Chúng tôi có thể cấu hình tên các mục menu tại đây.',
+                    'leads'          => 'Khách hàng tiềm năng',
+                    'mail'           => 'Thư',
+                    'organizations'  => 'Tổ chức',
+                    'outbox'         => 'Hộp thư đi',
+                    'persons'        => 'Người',
+                    'products'       => 'Sản phẩm',
+                    'quotes'         => 'Báo giá',
+                    'sent'           => 'Đã gửi',
+                    'settings'       => 'Cài đặt',
+                    'title'          => 'Cấu hình Mục Menu',
+                    'trash'          => 'Thùng rác',
+                ],
+
+                'menu-color' => [
+                    'active-background-color' => 'Màu nền Hoạt động',
+                    'active-text-color'       => 'Màu chữ Hoạt động',
+                    'info'                    => 'Chúng tôi có thể thay đổi màu các mục menu tại đây.',
+                    'text-color'              => 'Màu chữ',
+                    'title'                   => 'Cấu hình Màu Mục Menu',
                 ],
             ],
         ],

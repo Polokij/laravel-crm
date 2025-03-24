@@ -5,13 +5,8 @@ namespace Webkul\Lead\Helpers;
 use Illuminate\Support\Facades\Validator;
 use Webkul\Admin\Http\Requests\LeadForm;
 
-class Lead
+class MagicAI
 {
-    /**
-     * Const Variable of GEMINI_MODEL.
-     */
-    const GEMINI_MODEL = 'gemini-1.5-flash';
-
     /**
      * Const Variable of LEAD_ENTITY.
      */
@@ -22,35 +17,33 @@ class Lead
      */
     const PERSON_ENTITY = 'persons';
 
-    const OPEN_AI_MODEL_URL = 'https://api.openai.com/v1/chat/completions';
-
     /**
      * Mapped the receive Extracted AI data.
      */
     public static function mapAIDataToLead($aiData)
     {
-        $isGeminiModel = str_contains(core()->getConfigData('general.magic_ai.settings.model'), self::GEMINI_MODEL);
+        if (! empty($aiData['error'])) {
+            return self::errorHandler($aiData['error']);
+        }
 
-        $content = $isGeminiModel ? $aiData['candidates'][0]['content']['parts'][0]['text'] : $aiData['choices'][0]['message']['content'];
+        $content = strip_tags($aiData['choices'][0]['message']['content']);
 
-        $content = strip_tags($content);
+        if (empty($content)) {
+            return self::errorHandler(trans('admin::app.leads.file.data-not-found'));
+        }
 
         preg_match('/\{.*\}/s', $content, $matches);
 
-        if (! $jsonString = $matches[0] ?? null) {
-            return [
-                'status'  => 'error',
-                'message' => trans('admin::app.leads.file.invalid-response'),
-            ];
+        if (isset($matches[0])) {
+            $jsonString = $matches[0];
+        } else {
+            return self::errorHandler(trans('admin::app.leads.file.invalid-response'));
         }
 
         $finalData = json_decode($jsonString);
 
         if (json_last_error() !== JSON_ERROR_NONE) {
-            return [
-                'status'  => 'error',
-                'message' => trans('admin::app.leads.file.invalid-format'),
-            ];
+            return self::errorHandler(trans('admin::app.leads.file.invalid-format'));
         }
 
         try {
@@ -60,10 +53,7 @@ class Lead
 
             return array_merge($validatedData, self::prepareLeadData($finalData));
         } catch (\Exception $e) {
-            return [
-                'status'  => 'error',
-                'message' => $e->getMessage(),
-            ];
+            return self::errorHandler($e->getMessage());
         }
     }
 
@@ -85,16 +75,16 @@ class Lead
         if ($validator->fails()) {
             throw new \Illuminate\Validation\ValidationException(
                 $validator,
-                response()->json([
-                    'status'  => 'error',
-                    'message' => $validator->errors()->getMessages(),
-                ], 400)
+                response()->json(self::errorHandler($validator->errors()->getMessages()), 400)
             );
         }
 
         return $data;
     }
 
+    /**
+     * Prepares the lead prompt data.
+     */
     private static function prepareLeadData($finalData)
     {
         return [
@@ -121,6 +111,17 @@ class Lead
                 'entity_type'     => self::PERSON_ENTITY,
             ],
             'entity_type'         => self::LEAD_ENTITY,
+        ];
+    }
+
+    /**
+     * Prepares method for error handler.
+     */
+    public static function errorHandler($message)
+    {
+        return [
+            'status'  => 'error',
+            'message' => $message,
         ];
     }
 }

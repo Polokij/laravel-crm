@@ -1120,6 +1120,7 @@ return [
                         'name'        => 'Name',
                         'date'        => 'Date',
                         'description' => 'Description',
+                        'save-btn'    => 'Save Event',
                     ],
 
                     'edit' => [
@@ -1875,9 +1876,17 @@ return [
         'destroy-failed'    => 'Lead can not be deleted.',
 
         'file' => [
-            'invalid-format'   => 'Invalid JSON format.',
-            'invalid-response' => 'Invalid AI response format.',
-            'not-found'        => 'File not found.',
+            'data-not-found'         => 'Data not found.',
+            'empty-content'          => 'PDF content is empty or could not be extracted.',
+            'failed-extract'         => 'Failed to extract text from file.',
+            'insufficient-info'      => 'Due to insufficient data, we are unable to process your request at the moment.',
+            'invalid-base64'         => 'Invalid base64 format.',
+            'invalid-format'         => 'Invalid JSON format.',
+            'invalid-response'       => 'Invalid AI response format.',
+            'missing-api-key'        => 'Missing API key or model configuration.',
+            'not-found'              => 'File not found.',
+            'recursive-call'         => 'Recursive call detected.',
+            'text-generation-failed' => 'Text extraction failed. The file might be empty or unreadable.',
         ],
 
         'index' => [
@@ -1946,12 +1955,13 @@ return [
             ],
 
             'upload' => [
-                'create-lead' => 'Create Lead Using AI',
-                'file'        => 'File Upload',
-                'file-info'   => 'Only PDF format files are accepted.',
-                'save-btn'    => 'Save',
-                'sample-pdf'  => 'Sample PDF',
-                'upload-pdf'  => 'Upload PDF',
+                'create-lead'   => 'Create Lead Using AI',
+                'file'          => 'File Upload',
+                'file-info'     => 'Only pdf,bmp,jpg,jpeg,png format files are accepted.',
+                'file-required' => 'Please select at least one valid file to proceed.',
+                'sample-pdf'    => 'Sample PDF',
+                'save-btn'      => 'Save',
+                'upload-file'   => 'Upload File',
             ],
         ],
 
@@ -2065,11 +2075,14 @@ return [
 
     'configuration' => [
         'index' => [
-            'back'         => 'Back',
-            'save-btn'     => 'Save Configuration',
-            'save-success' => 'Configuration Saved Successfully.',
-            'search'       => 'Search',
-            'title'        => 'Configuration',
+            'back'           => 'Back',
+            'delete'         => 'Delete',
+            'save-btn'       => 'Save Configuration',
+            'save-success'   => 'Configuration Saved Successfully.',
+            'search'         => 'Search',
+            'select-country' => 'Select Country',
+            'select-state'   => 'Select State',
+            'title'          => 'Configuration',
 
             'general'  => [
                 'title'   => 'General',
@@ -2081,6 +2094,50 @@ return [
                     'locale-settings' => [
                         'title'       => 'Locale Settings',
                         'title-info'  => 'Defines the language used in the user interface, such as Arabic (ar), English (en), Spanish (es), Persian(fa) and Turkish (tr).',
+                    ],
+
+                    'admin-logo' => [
+                        'logo-image' => 'Logo Image',
+                        'title'      => 'Admin Logo',
+                        'title-info' => 'Configure logo image for your admin panel.',
+                    ],
+                ],
+
+                'settings' => [
+                    'title' => 'Settings',
+                    'info'  => 'Update your settings here.',
+
+                    'footer' => [
+                        'info'       => 'We can configure the powered by section here.',
+                        'powered-by' => 'Powered by text editor',
+                        'title'      => 'Powered by Section Configurations',
+                    ],
+
+                    'menu' => [
+                        'activities'     => 'Activities',
+                        'configuration'  => 'Configuration',
+                        'contacts'       => 'Contacts',
+                        'dashboard'      => 'Dashboard',
+                        'draft'          => 'Draft',
+                        'inbox'          => 'Inbox',
+                        'info'           => 'We can configure the menu items name here.',
+                        'leads'          => 'Leads',
+                        'mail'           => 'Mail',
+                        'organizations'  => 'Organizations',
+                        'outbox'         => 'Outbox',
+                        'persons'        => 'Persons',
+                        'products'       => 'Products',
+                        'quotes'         => 'Quotes',
+                        'sent'           => 'Sent',
+                        'settings'       => 'Settings',
+                        'title'          => 'Menu Item Configurations',
+                        'trash'          => 'Trash',
+                    ],
+
+                    'menu-color' => [
+                        'brand-color' => 'Brand Color',
+                        'info'        => 'We can change the menu items colors here.',
+                        'title'       => 'Menu Item Color Configurations',
                     ],
                 ],
             ],
@@ -2111,24 +2168,24 @@ return [
                 'info'  => 'Magic AI configuration for the application.',
 
                 'settings' => [
-                    'api-domain'          => 'LLM API Domain',
-                    'api-domain-info'     => ' For Olama And Grow only, Exp:- http://localhost:11434',
                     'api-key'             => 'API Key',
-                    'api-key-info'        => 'Please ensure that you use a unique API key for each model type to maintain optimal performance and security.',
+                    'api-key-info'        => 'Remember to use a OpenRouter API key for each model. It\'s a simple step to enhance security and performance.',
                     'enable'              => 'Enable',
-                    'info'                => 'Enhance your experience with the Magic AI feature by entering your exclusive API Key and indicating the effortless integration. Seize command over your OpenAI credentials and customize the settings according to your specific needs.',
+                    'info'                => 'Enhance your Magic AI experience with your OpenRouter API Key. Integrate it now for a seamless, personalized AI adventure tailored just for you! Effortlessly customize settings and take control of your AI journey.',
+                    'other'               => 'Other Model',
+                    'other-model'         => 'For other models, use the Model ID from OpenRouter.',
                     'pdf-generation'      => 'PDF Generation',
                     'pdf-generation-info' => 'Enable the PDF Generation feature to automatically extract data from PDF files and convert them into text format. Enhance your productivity and efficiency by enabling this feature to streamline your workflow.',
                     'title'               => 'General Settings',
 
                     'models'     => [
-                        'deepseek-r1'  => 'DeepSeek-R1 8db',
-                        'gemini-flash' => 'Gemini-1.5 Flash',
-                        'gpt-4o'       => 'GPT-4.0',
-                        'gpt-4o-mini'  => 'GPT-4.0 mini',
-                        'llama'        => 'Llama 3.3 (Groq)',
-                        'ollama'       => 'Ollama (llama3.2:latest)',
-                        'title'        => 'Models',
+                        'deepseek-r1'           => 'Deepseek R1 Distill-llama-8b',
+                        'gemini-2-0-flash-001'  => 'Gemini 2.0 flash-001',
+                        'gpt-4o'                => 'GPT-4.0',
+                        'gpt-4o-mini'           => 'GPT-4.0 mini',
+                        'grok-2-1212'           => 'Grok 2.12',
+                        'llama-3-2-3b-instruct' => 'Llama 3.2 3b Instruct',
+                        'title'                 => 'Models',
                     ],
                 ],
             ],
